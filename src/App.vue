@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <Timer :time="lights[id].time"/>
+        <Timer :timer="timer"/>
         <div id="main">
           <Light :color="lights[id].color"/>
         </div>
@@ -29,21 +29,34 @@ export default {
             id: 0
         };
     },
+
+    computed: {
+        timer: function() {
+                return this.lights[this.id].time;
+            }
+    },
+
     methods: {
+
         changeColor(){
+
             if(this.id < lights.length - 1) {
                 this.id++;
             } else {
                 this.id = 0;
             }
+
             setTimeout(() => {
                 this.changeColor();
             }, this.lights[this.id].time * 1000);
-        }
+        },
+
     },
+
     mounted: function() {
         this.changeColor();
     },
+
     components: {
         Light, Timer
     }
