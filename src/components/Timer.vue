@@ -17,7 +17,6 @@ export default {
     watch: {
         timer: function(){
             this.timeStart = new Date;
-            this.timeLeft = this.timer;
         }
     },
 

@@ -38,9 +38,13 @@ export default {
 
     methods: {
 
-        changeColor(){
+        changeColor( colorID ){
 
-            if(this.id < lights.length - 1) {
+            if( +colorID >= 0 &&
+                +colorID < this.lights.length ) {
+                this.id = colorID
+            } 
+            else if( this.id < this.lights.length - 1 ) {
                 this.id++;
             } else {
                 this.id = 0;
@@ -54,7 +58,7 @@ export default {
     },
 
     mounted: function() {
-        this.changeColor();
+        this.changeColor(0);
     },
 
     components: {
