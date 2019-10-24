@@ -5,7 +5,7 @@
 <script>
 export default {
 
-    props:[ "timer", "saveTime" ],
+    props:[ "timer", "saveTime", "checkTime" ],
 
     data(){
         return {
@@ -26,6 +26,7 @@ export default {
             const timePassed = currTime - this.timeStart;
             this.timeLeft = (this.timer - timePassed / 1000).toFixed(1);
             this.saveTime(this.timeLeft);
+            this.checkTime(this.timeLeft);
         }
     },
 

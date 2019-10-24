@@ -1,8 +1,8 @@
 <template>
     <div id="app">
-        <Timer :timer="timer" :saveTime="saveTime"/>
+        <Timer :timer="timer" :saveTime="saveTime" :checkTime="checkTime"/>
         <div id="main">
-          <Light :color="lights[id].color"/>
+          <Light :color="lights[id].color" v-show="visible"/>
         </div>
     </div>
 </template>
@@ -27,6 +27,7 @@ export default {
         return  {
             lights,
             savedTime: undefined,
+            visible: true,
             id: 0
         };
     },
@@ -39,7 +40,7 @@ export default {
                 return tmp;
             }
             return this.lights[this.id].time;
-        }
+        },
     },
 
     methods: {
@@ -81,6 +82,10 @@ export default {
         saveTime(timeLeft) {
             localStorage.timer = timeLeft;
             localStorage.id = this.id;
+        },
+
+        checkTime(time) {
+            if( time < 3 && time > 0.1 && time % 0.5 == 0) this.visible = !this.visible;
         }
 
     },
