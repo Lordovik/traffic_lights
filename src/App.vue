@@ -87,8 +87,8 @@ export default {
 
     mounted: function() {
         let timer   = +localStorage.timer;
-        let id      = this.$route.params.color ? this.$route.params.color : +localStorage.id;
-        this.changeColor( id || this.$route.params.color || 0, timer );
+        let id      = this.$route.params.color || +localStorage.id;
+        this.changeColor( id  || 0, timer );
     },
 
     components: {
