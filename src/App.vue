@@ -22,6 +22,13 @@ const lights = [
     yellow
 ];
 
+function getColorID(color) {
+    for(let i = 0; i < lights.length; i++){
+        if(color != lights[i].color) continue;
+        return i;
+    }
+};
+
 export default {
     data() {
         return  {
@@ -47,17 +54,7 @@ export default {
 
         changeColor( color, time ){
 
-            if(typeof color == "string") {
-                let matched = false;
-                for(let i = 0; i < this.lights.length; i++){
-                    if(color != this.lights[i].color) continue;
-                    this.id = i;
-                    matched = true;
-                    break;
-                }
-                if(!matched) this.id = 0;
-            }
-            else if( +color >= 0 &&
+            if( +color >= 0 &&
                 +color < this.lights.length ) {
                 this.id = color
             } 
@@ -92,9 +89,22 @@ export default {
     },
 
     mounted: function() {
-        let timer   = +localStorage.timer;
-        let id      = localStorage.id >= 0 ? +localStorage.id : this.$route.params.color;
-        this.changeColor( id  || 0, timer );
+
+        let routeColor = this.$route.params.color;
+        let savedColor = this.lights[localStorage.id].color;
+
+        let id, timer;
+
+        if(routeColor === savedColor) {
+            id = +localStorage.id;
+            timer = +localStorage.timer;
+        } 
+        else {
+            id = getColorID(routeColor) || 0;
+            timer = this.lights[id].time;
+        }
+
+        this.changeColor( id , timer );
     },
 
     components: {
