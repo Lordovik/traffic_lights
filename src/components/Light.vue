@@ -1,18 +1,61 @@
 <template>
-    <div :class="color"></div>
+    <div>
+        <div class="green light"></div>
+        <div class="yellow light"></div>
+        <div class="red light"></div>
+    </div>
 </template>
 
 <script>
+function getElByColor(color, lights) {
+    for(let i = 0; i < lights.length; i++){
+        if( !lights[i].classList.contains(color) ) continue;
+        return lights[i];
+    }
+}
+
 export default {
-    props: ['color']
+    props: ['color', 'show'],
+
+    computed: {
+        currentLight(){
+            return getElByColor(this.color, this.lights);
+        },
+
+        lights() {
+            return this.$el.querySelectorAll(".light");
+        }
+    },
+
+    watch: {
+        color(newColor, oldColor){
+            let newLight = getElByColor(newColor, this.lights);
+            let oldLight = getElByColor(oldColor, this.lights);
+
+            if(newLight){
+                newLight.style.opacity = 1.0;
+            }
+            if(oldLight){
+                oldLight.style.opacity = 0.3;
+            }
+        },
+
+        show(visible){
+            let style = this.currentLight.style;
+            if(visible) style.opacity = 1.0;
+            else style.opacity = 0.3;
+        }
+    }
 }
 </script>
 
 <style>
 .green, .red, .yellow{
-    width: inherit;
-    height: inherit;
-    border-radius: inherit;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    opacity: .3;
+    margin: 0 auto;
 }
 .green{
     background-color: green;

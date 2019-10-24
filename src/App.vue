@@ -1,9 +1,7 @@
 <template>
     <div id="app">
         <Timer :timer="timer" :saveTime="saveTime" :checkTime="checkTime"/>
-        <div id="main">
-          <Light :color="lights[id].color" v-show="visible"/>
-        </div>
+        <Light :color="lights[id].color" :show="visible"/>
     </div>
 </template>
 
@@ -117,10 +115,5 @@ export default {
 #app > div {
     margin: 0 auto;
     width: 400px;
-}
-#main{
-    background-color: grey;
-    height: 400px;
-    border-radius: 50%;
 }
 </style>
