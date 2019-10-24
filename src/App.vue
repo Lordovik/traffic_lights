@@ -72,6 +72,7 @@ export default {
                 time = this.lights[this.id].time;
             }
             this.savedTime = time;
+            this.visible = true;
 
             this.$router.push(this.lights[this.id].color);
             setTimeout(() => {
