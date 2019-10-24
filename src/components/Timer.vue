@@ -1,11 +1,11 @@
 <template>
-    <p>{{ timeLeft }}</p>
+    <p>{{ timeLeft > 0 ? timeLeft : 0 }}</p>
 </template>
 
 <script>
 export default {
 
-    props:[ "timer" ],
+    props:[ "timer", "saveTime" ],
 
     data(){
         return {
@@ -25,6 +25,7 @@ export default {
             const currTime = new Date;
             const timePassed = currTime - this.timeStart;
             this.timeLeft = (this.timer - timePassed / 1000).toFixed(1);
+            this.saveTime(this.timeLeft);
         }
     },
 
@@ -32,10 +33,6 @@ export default {
         setInterval(() => {
             this.tickTime();
         }, 100);
-    },
-
-    updated: function() {
-        this.tickTime();
     }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <Timer :timer="timer"/>
+        <Timer :timer="timer" :saveTime="saveTime"/>
         <div id="main">
           <Light :color="lights[id].color"/>
         </div>
@@ -26,39 +26,69 @@ export default {
     data() {
         return  {
             lights,
+            savedTime: undefined,
             id: 0
         };
     },
 
     computed: {
         timer: function() {
-                return this.lights[this.id].time;
+            if(this.savedTime) {
+                let tmp = this.savedTime;
+                this.savedTime = undefined;
+                return tmp;
             }
+            return this.lights[this.id].time;
+        }
     },
 
     methods: {
 
-        changeColor( colorID ){
+        changeColor( color, time ){
 
-            if( +colorID >= 0 &&
-                +colorID < this.lights.length ) {
-                this.id = colorID
+            if(typeof color == "string") {
+                let matched = false;
+                for(let i = 0; i < this.lights.length; i++){
+                    if(color != this.lights[i].color) continue;
+                    this.id = i;
+                    matched = true;
+                    break;
+                }
+                if(!matched) this.id = 0;
+            }
+            else if( +color >= 0 &&
+                +color < this.lights.length ) {
+                this.id = color
             } 
             else if( this.id < this.lights.length - 1 ) {
                 this.id++;
-            } else {
+            }
+            else {
                 this.id = 0;
             }
 
+            if( !( time && +time > 0 && +time <= this.lights[this.id].time ) ) {
+                time = this.lights[this.id].time;
+            }
+            this.savedTime = time;
+
+            this.$router.push(this.lights[this.id].color);
             setTimeout(() => {
                 this.changeColor();
-            }, this.lights[this.id].time * 1000);
+            }, time * 1000);
         },
+
+        saveTime(timeLeft) {
+            localStorage.timer = timeLeft;
+            localStorage.id = this.id;
+        }
 
     },
 
     mounted: function() {
-        this.changeColor(0);
+        let timer   = +localStorage.timer;
+        let id      = this.$route.params.color ? this.$route.params.color : +localStorage.id;
+        this.changeColor( id || this.$route.params.color || 0, timer );
     },
 
     components: {

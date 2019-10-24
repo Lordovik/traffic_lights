@@ -4,7 +4,7 @@
 
 <script>
 export default {
-    props: ['color', 'changeColor']
+    props: ['color']
 }
 </script>
 
