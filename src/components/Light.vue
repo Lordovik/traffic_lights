@@ -45,6 +45,10 @@ export default {
             if(visible) style.opacity = 1.0;
             else style.opacity = 0.3;
         }
+    },
+
+    mounted(){
+        this.currentLight.style.opacity = 1.0;
     }
 }
 </script>
